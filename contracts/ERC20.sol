@@ -13,6 +13,7 @@ contract ERC20Token is IERC20 {
         symbol = _symbol;
         decimal = 18;
         totalTokenSupply = _totalTokenSupply * 10 ** decimal;
+        balanceOf[msg.sender] = totalTokenSupply;
     }
 
     mapping(address => uint256) balanceOf;
@@ -66,5 +67,10 @@ contract ERC20Token is IERC20 {
         require(_amount > 0, "burn amount must be greater than 0");
         require(balanceOf[msg.sender] >= _amount);
         payable(address(0)).transfer(_amount);
+    }
+
+    function mint(uint256 _amount) external returns (bool) {
+        totalTokenSupply = totalTokenSupply + _amount;
+        return true;
     }
 }
